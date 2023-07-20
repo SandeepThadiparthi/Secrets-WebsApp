@@ -6,11 +6,18 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine','ejs');
 app.use(express.static("public"));
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
+
+
 mongoose.connect("mongodb+srv://sandeepthadiparthi:Sandeep%401@cluster0.gjiu1s8.mongodb.net/userDB");
-const userSchema = {
+const userSchema = new mongoose.Schema({
     username:String,
     password:String
-};
+});
+const secret = "thisismySecretscode";
+userSchema.plugin(encrypt, { secret : secret, encryptedFields: ['password'] });
+
+
 
 const User = new mongoose.model("User",userSchema);
 
@@ -44,6 +51,9 @@ app.post("/login",function(req,res){
     const username = req.body.username;
     const password = req.body.password;
     User.findOne({username:username}).then( (founduser) => {
+        if (!founduser){
+            console.log("no user found");
+        }
         if (founduser) {
             if (founduser.password === password) {
                 res.render("secrets");
