@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-mongoose.connect("mongodb+srv://sandeepthadiparthi:Sandeep%401@cluster0.gjiu1s8.mongodb.net/userDB");
+mongoose.connect(process.env.mongodb);
 const userSchema = new mongoose.Schema({
     username:String,
     password:String,
@@ -57,7 +57,7 @@ passport.serializeUser(function(user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets"
+    callbackURL: "https://pear-sore-dog.cyclic.app/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
