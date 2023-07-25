@@ -57,7 +57,7 @@ passport.serializeUser(function(user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://pear-sore-dog.cyclic.app/auth/google/secrets"
+    callbackURL: "http://localhost:3000/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -184,6 +184,6 @@ app.post("/login",function(req,res){
 
 
 
-app.listen(process.env.PORT|| 3000,function(req,res){
+app.listen(3000,function(req,res){
     console.log("Server is up at 3000..!");
 });
